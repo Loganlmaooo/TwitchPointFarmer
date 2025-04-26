@@ -58,7 +58,7 @@ export default function Header({ toggleSidebar }: HeaderProps) {
             asChild
             className="bg-twitch-lightgray hover:bg-twitch-gray border-0 text-white"
           >
-            <a href="/admin">
+            <a href="/settings">
               <Settings className="h-4 w-4" />
             </a>
           </Button>
