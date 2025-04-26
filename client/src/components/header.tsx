@@ -68,6 +68,14 @@ export default function Header({ toggleSidebar }: HeaderProps) {
             asChild
             className="bg-purple-600 hover:bg-purple-700 border-0 text-white"
           >
+            <a href="/settings">Settings</a>
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm"
+            asChild
+            className="bg-purple-600 hover:bg-purple-700 border-0 text-white"
+          >
             <a href="/admin">Admin Panel</a>
           </Button>
         </div>
