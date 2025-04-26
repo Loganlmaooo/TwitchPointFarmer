@@ -80,7 +80,29 @@ export default function Admin() {
                 placeholder="Enter your admin key"
                 className="flex-1"
               />
-              <Button onClick={() => queryClient.invalidateQueries({ queryKey: ["access-keys"] })}>
+              <Button onClick={async () => {
+                const response = await fetch('/api/validate-key', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ key: adminKey })
+                });
+                const data = await response.json();
+                
+                if (data.valid && data.admin) {
+                  // Set the key in localStorage
+                  localStorage.setItem('api-key', adminKey);
+                  // Refresh the query with new headers
+                  queryClient.invalidateQueries({ queryKey: ["access-keys"] });
+                } else {
+                  toast({
+                    title: "Invalid Key",
+                    description: "Please enter a valid admin key",
+                    variant: "destructive"
+                  });
+                }
+              }}>
                 Submit
               </Button>
             </div>
