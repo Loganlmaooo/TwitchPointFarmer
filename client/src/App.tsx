@@ -13,6 +13,7 @@ import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
 import MobileNavigation from "@/components/mobile-navigation";
 import { useState } from "react";
+import Admin from '@/pages/admin';
 
 function Router() {
   return (
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/statistics" component={Statistics} />
       <Route path="/logs" component={Logs} />
       <Route path="/settings" component={Settings} />
+      <Route path="/admin" element={<Admin />} />
       <Route component={NotFound} />
     </Switch>
   );
