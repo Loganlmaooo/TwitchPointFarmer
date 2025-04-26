@@ -15,7 +15,8 @@ import {
   startFarming,
   stopFarming,
   sendWebhookTest,
-  sendDailySummary
+  sendDailySummary,
+  sendPendingWebhooks
 } from "@/lib/api";
 import { InsertTwitchChannel, TwitchChannel } from "@shared/schema";
 
