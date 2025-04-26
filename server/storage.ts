@@ -73,143 +73,22 @@ export class MemStorage implements IStorage {
       lastUpdated: new Date(),
     };
 
-    // Add some demo channels
+    // Initialize the storage with empty data
     this.seedDemoData();
   }
 
   private seedDemoData() {
-    const demoChannels = [
-      {
-        channelName: "xQc",
-        isLive: true,
-        viewerCount: 124700,
-        pointsCollected: 18762,
-        watchTimeMinutes: 56 * 60 + 42,
-        bonusClaims: 42,
-        autoClaimPoints: true,
-        claimBonuses: true,
-        sendLogsToDiscord: true,
-        autoFollow: false,
-        priority: "medium",
-      },
-      {
-        channelName: "Asmongold",
-        isLive: true,
-        viewerCount: 53200,
-        pointsCollected: 12450,
-        watchTimeMinutes: 42 * 60 + 18,
-        bonusClaims: 36,
-        autoClaimPoints: true,
-        claimBonuses: true,
-        sendLogsToDiscord: true,
-        autoFollow: false,
-        priority: "high",
-      },
-      {
-        channelName: "pokimane",
-        isLive: true,
-        viewerCount: 42300,
-        pointsCollected: 8234,
-        watchTimeMinutes: 24 * 60 + 15,
-        bonusClaims: 22,
-        autoClaimPoints: true,
-        claimBonuses: true,
-        sendLogsToDiscord: true,
-        autoFollow: false,
-        priority: "medium",
-      },
-      {
-        channelName: "LIRIK",
-        isLive: false,
-        viewerCount: 0,
-        pointsCollected: 3444,
-        watchTimeMinutes: 16 * 60 + 30,
-        bonusClaims: 18,
-        autoClaimPoints: true,
-        claimBonuses: true,
-        sendLogsToDiscord: true,
-        autoFollow: false,
-        priority: "low",
-      }
-    ];
-
-    demoChannels.forEach(channel => {
-      const id = this.channelIdCounter++;
-      this.channels.set(id, {
-        id,
-        channelId: `${id}${channel.channelName.toLowerCase()}`,
-        isActive: true,
-        lastUpdated: new Date(),
-        ...channel
-      });
-    });
-
-    // Update stats based on seeded channels
+    // No demo data - all will be added by the user
+    
+    // Initialize empty stats
     if (this.statsObj) {
-      this.statsObj.totalPointsCollected = Array.from(this.channels.values()).reduce((sum, channel) => sum + channel.pointsCollected, 0);
-      this.statsObj.totalWatchTimeMinutes = Array.from(this.channels.values()).reduce((sum, channel) => sum + channel.watchTimeMinutes, 0);
-      this.statsObj.totalBonusClaims = Array.from(this.channels.values()).reduce((sum, channel) => sum + channel.bonusClaims, 0);
-      this.statsObj.activeChannels = Array.from(this.channels.values()).filter(channel => channel.isActive).length;
-      this.statsObj.pointsPerHour = Math.floor(this.statsObj.totalPointsCollected / (this.statsObj.totalWatchTimeMinutes / 60));
-      this.statsObj.startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 7 days ago
+      this.statsObj.totalPointsCollected = 0;
+      this.statsObj.totalWatchTimeMinutes = 0;
+      this.statsObj.totalBonusClaims = 0;
+      this.statsObj.activeChannels = 0;
+      this.statsObj.pointsPerHour = 0;
+      this.statsObj.startDate = new Date();
     }
-
-    // Seed some activity logs
-    const demoLogs = [
-      {
-        channelName: "xQc",
-        activityType: "points",
-        message: "Claimed 250 points from xQc",
-        pointsGained: 250,
-        timestamp: new Date(Date.now() - 2 * 60 * 1000), // 2 minutes ago
-      },
-      {
-        channelName: "pokimane",
-        activityType: "live",
-        message: "Channel pokimane went live",
-        pointsGained: 0,
-        timestamp: new Date(Date.now() - 15 * 60 * 1000), // 15 minutes ago
-      },
-      {
-        channelName: "Asmongold",
-        activityType: "points",
-        message: "Claimed 150 points from Asmongold",
-        pointsGained: 150,
-        timestamp: new Date(Date.now() - 26 * 60 * 1000), // 26 minutes ago
-      },
-      {
-        channelName: "xQc",
-        activityType: "bonus",
-        message: "Claimed bonus points from xQc",
-        pointsGained: 500,
-        timestamp: new Date(Date.now() - 42 * 60 * 1000), // 42 minutes ago
-      },
-      {
-        channelName: "LIRIK",
-        activityType: "error",
-        message: "Connection error with LIRIK",
-        pointsGained: 0,
-        timestamp: new Date(Date.now() - 60 * 60 * 1000), // 1 hour ago
-      },
-      {
-        channelName: "pokimane",
-        activityType: "connection",
-        message: "Added channel pokimane to farming",
-        pointsGained: 0,
-        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-      }
-    ];
-
-    demoLogs.forEach(log => {
-      const id = this.logIdCounter++;
-      const channelObj = Array.from(this.channels.values()).find(channel => channel.channelName === log.channelName);
-      this.logs.set(id, {
-        id,
-        channelId: channelObj?.id,
-        sentToDiscord: true,
-        ...log
-      });
-    });
   }
 
   // TwitchChannel operations

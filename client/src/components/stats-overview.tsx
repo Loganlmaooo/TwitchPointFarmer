@@ -24,6 +24,18 @@ export default function StatsOverview({ activeChannels, isLoading }: StatsOvervi
     return num.toLocaleString();
   };
 
+  const calculateDaysRunning = (): string => {
+    if (!stats?.startDate) return "0 days";
+    const days = Math.ceil((Date.now() - new Date(stats.startDate).getTime()) / (1000 * 60 * 60 * 24));
+    return `${days} days`;
+  };
+
+  const calculateBonusPerDay = (): string => {
+    if (!stats?.startDate || !stats.totalBonusClaims) return "0/day";
+    const days = Math.max(1, (Date.now() - new Date(stats.startDate).getTime()) / (1000 * 60 * 60 * 24));
+    return `~${Math.round(stats.totalBonusClaims / days)}/day`;
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       {/* Active Channels Card */}
@@ -39,7 +51,10 @@ export default function StatsOverview({ activeChannels, isLoading }: StatsOvervi
             <>
               <p className="text-2xl font-semibold">{activeChannels?.filter(c => c.isLive).length || 0}</p>
               <p className="text-xs text-gray-400 mt-1">
-                {stats?.startDate && `Since ${new Date(stats.startDate).toLocaleDateString()}`}
+                {stats?.startDate ? 
+                  `Since ${new Date(stats.startDate).toLocaleDateString()}` : 
+                  "No data yet"
+                }
               </p>
             </>
           )}
@@ -59,7 +74,7 @@ export default function StatsOverview({ activeChannels, isLoading }: StatsOvervi
             <>
               <p className="text-2xl font-semibold">{formatNumber(stats?.totalPointsCollected)}</p>
               <p className="text-xs text-gray-400 mt-1">
-                ~{formatNumber(stats?.pointsPerHour)}/hour
+                ~{formatNumber(stats?.pointsPerHour) || "0"}/hour
               </p>
             </>
           )}
@@ -79,7 +94,7 @@ export default function StatsOverview({ activeChannels, isLoading }: StatsOvervi
             <>
               <p className="text-2xl font-semibold">{formatWatchTime(stats?.totalWatchTimeMinutes)}</p>
               <p className="text-xs text-gray-400 mt-1">
-                {stats?.startDate && `Running for ${Math.ceil((Date.now() - new Date(stats.startDate).getTime()) / (1000 * 60 * 60 * 24))} days`}
+                Running for {calculateDaysRunning()}
               </p>
             </>
           )}
@@ -99,12 +114,7 @@ export default function StatsOverview({ activeChannels, isLoading }: StatsOvervi
             <>
               <p className="text-2xl font-semibold">{formatNumber(stats?.totalBonusClaims)}</p>
               <p className="text-xs text-gray-400 mt-1">
-                {stats?.startDate && 
-                  `~${Math.round(
-                    (stats.totalBonusClaims || 0) / 
-                    (Math.max(1, (Date.now() - new Date(stats.startDate).getTime()) / (1000 * 60 * 60 * 24)))
-                  )}/day`
-                }
+                {calculateBonusPerDay()}
               </p>
             </>
           )}
