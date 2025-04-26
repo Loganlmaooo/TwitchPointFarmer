@@ -1,5 +1,6 @@
+
 import { useLocation } from "wouter";
-import { LayoutDashboard, Tv2, BarChart3, FileText } from "lucide-react";
+import { LayoutDashboard, Tv2, BarChart3, FileText, Shield } from "lucide-react";
 
 export default function MobileNavigation() {
   const [location] = useLocation();
@@ -16,6 +17,7 @@ export default function MobileNavigation() {
     { path: "/channels", label: "Channels", icon: <Tv2 className="text-xl" /> },
     { path: "/statistics", label: "Stats", icon: <BarChart3 className="text-xl" /> },
     { path: "/logs", label: "Logs", icon: <FileText className="text-xl" /> },
+    { path: "/admin", label: "Admin", icon: <Shield className="text-xl" /> },
   ];
 
   return (
