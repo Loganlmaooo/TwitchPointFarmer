@@ -15,6 +15,7 @@ export default function Admin() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [adminKey, setAdminKey] = useState('');
   const [newKey, setNewKey] = useState({
     label: "",
     isAdmin: false,
@@ -66,6 +67,26 @@ export default function Admin() {
 
   return (
     <div className="space-y-6">
+      {!keys.length && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Enter Admin Key</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-4">
+              <Input
+                value={adminKey}
+                onChange={(e) => setAdminKey(e.target.value)}
+                placeholder="Enter your admin key"
+                className="flex-1"
+              />
+              <Button onClick={() => queryClient.invalidateQueries({ queryKey: ["access-keys"] })}>
+                Submit
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Access Key Management</h2>
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
