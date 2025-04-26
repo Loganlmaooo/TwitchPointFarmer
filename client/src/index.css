@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 271 100% 65%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+
+  /* Twitch-specific colors */
+  --twitch-purple: 271 100% 65%;
+  --twitch-lightpurple: 271 91% 57%;
+  --twitch-dark: 240 3% 10%;
+  --twitch-darker: 240 7% 6%;
+  --twitch-gray: 240 8% 13%;
+  --twitch-lightgray: 240 8% 16%;
+  --twitch-text: 240 8% 95%;
+  --twitch-success: 147 100% 49%;
+  --twitch-error: 359 100% 64%;
+  --twitch-warning: 44 100% 58%;
+
+  /* Chart colors */
+  --chart-1: 271 100% 65%;
+  --chart-2: 147 100% 49%;
+  --chart-3: 44 100% 58%;
+  --chart-4: 359 100% 64%;
+  --chart-5: 210 100% 51%;
+}
+
+/* Twitch-specific utility classes */
+.bg-twitch-purple {
+  background-color: hsl(271, 100%, 65%);
+}
+.bg-twitch-lightpurple {
+  background-color: hsl(271, 91%, 57%);
+}
+.bg-twitch-dark {
+  background-color: hsl(240, 3%, 10%);
+}
+.bg-twitch-darker {
+  background-color: hsl(240, 7%, 6%);
+}
+.bg-twitch-gray {
+  background-color: hsl(240, 8%, 13%);
+}
+.bg-twitch-lightgray {
+  background-color: hsl(240, 8%, 16%);
+}
+.text-twitch-purple {
+  color: hsl(271, 100%, 65%);
+}
+.text-twitch-success {
+  color: hsl(147, 100%, 49%);
+}
+.text-twitch-error {
+  color: hsl(359, 100%, 64%);
+}
+.text-twitch-warning {
+  color: hsl(44, 100%, 58%);
+}
+.border-twitch-lightgray {
+  border-color: hsl(240, 8%, 16%);
+}
+.hover\:bg-twitch-lightpurple:hover {
+  background-color: hsl(271, 91%, 57%);
+}
+.hover\:bg-twitch-gray:hover {
+  background-color: hsl(240, 8%, 13%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
