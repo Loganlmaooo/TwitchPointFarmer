@@ -2,7 +2,8 @@ import {
   TwitchChannel, InsertTwitchChannel, 
   ActivityLog, InsertActivityLog,
   Settings, InsertSettings,
-  Stats, InsertStats
+  Stats, InsertStats,
+  AccessKey, InsertAccessKey
 } from "@shared/schema";
 
 // Storage interface for database operations
@@ -31,6 +32,16 @@ export interface IStorage {
   // Stats operations
   getStats(): Promise<Stats | undefined>;
   updateStats(updates: Partial<Stats>): Promise<Stats | undefined>;
+  
+  // Access Key operations
+  getKeys(): Promise<AccessKey[]>;
+  getKey(id: number): Promise<AccessKey | undefined>;
+  getKeyByValue(keyValue: string): Promise<AccessKey | undefined>;
+  createKey(key: InsertAccessKey): Promise<AccessKey>;
+  updateKey(id: number, updates: Partial<AccessKey>): Promise<AccessKey | undefined>;
+  deleteKey(id: number): Promise<boolean>;
+  validateKey(keyValue: string): Promise<boolean>;
+  validateAdminKey(keyValue: string): Promise<boolean>;
 }
 
 // In-memory storage implementation
@@ -39,14 +50,18 @@ export class MemStorage implements IStorage {
   private logs: Map<number, ActivityLog>;
   private settingsObj: Settings | undefined;
   private statsObj: Stats | undefined;
+  private keys: Map<number, AccessKey>;
   private channelIdCounter: number;
   private logIdCounter: number;
+  private keyIdCounter: number;
 
   constructor() {
     this.channels = new Map();
     this.logs = new Map();
+    this.keys = new Map();
     this.channelIdCounter = 1;
     this.logIdCounter = 1;
+    this.keyIdCounter = 1;
 
     // Initialize with default settings
     this.settingsObj = {
@@ -227,6 +242,56 @@ export class MemStorage implements IStorage {
       lastUpdated: new Date()
     };
     return this.statsObj;
+  }
+  
+  // Access Key operations
+  async getKeys(): Promise<AccessKey[]> {
+    return Array.from(this.keys.values());
+  }
+
+  async getKey(id: number): Promise<AccessKey | undefined> {
+    return this.keys.get(id);
+  }
+
+  async getKeyByValue(keyValue: string): Promise<AccessKey | undefined> {
+    return Array.from(this.keys.values()).find(key => key.key === keyValue);
+  }
+
+  async createKey(key: InsertAccessKey): Promise<AccessKey> {
+    const id = this.keyIdCounter++;
+    const newKey: AccessKey = {
+      id,
+      createdAt: new Date(),
+      ...key
+    };
+    this.keys.set(id, newKey);
+    return newKey;
+  }
+
+  async updateKey(id: number, updates: Partial<AccessKey>): Promise<AccessKey | undefined> {
+    const key = this.keys.get(id);
+    if (!key) return undefined;
+
+    const updatedKey = {
+      ...key,
+      ...updates
+    };
+    this.keys.set(id, updatedKey);
+    return updatedKey;
+  }
+
+  async deleteKey(id: number): Promise<boolean> {
+    return this.keys.delete(id);
+  }
+
+  async validateKey(keyValue: string): Promise<boolean> {
+    const key = await this.getKeyByValue(keyValue);
+    return !!(key && key.isActive);
+  }
+
+  async validateAdminKey(keyValue: string): Promise<boolean> {
+    const key = await this.getKeyByValue(keyValue);
+    return !!(key && key.isActive && key.isAdmin);
   }
 }
 

@@ -111,3 +111,22 @@ export const insertStatsSchema = createInsertSchema(stats).omit({
 
 export type InsertStats = z.infer<typeof insertStatsSchema>;
 export type Stats = typeof stats.$inferSelect;
+
+// Access Key Schema
+export const accessKeys = pgTable("access_keys", {
+  id: serial("id").primaryKey(),
+  key: text("key").notNull().unique(),
+  label: text("label"),
+  isAdmin: boolean("is_admin").default(false),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  expiresAt: timestamp("expires_at"),
+});
+
+export const insertAccessKeySchema = createInsertSchema(accessKeys).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertAccessKey = z.infer<typeof insertAccessKeySchema>;
+export type AccessKey = typeof accessKeys.$inferSelect;
