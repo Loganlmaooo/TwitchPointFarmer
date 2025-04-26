@@ -56,7 +56,7 @@ export default function Header({ toggleSidebar }: HeaderProps) {
             variant="outline" 
             size="icon"
             asChild
-            className="bg-twitch-lightgray hover:bg-twitch-gray border-0 text-white"
+            className="bg-twitch-lightgray hover:bg-twitch-gray border-0 text-white md:hidden"
           >
             <a href="/settings">
               <Settings className="h-4 w-4" />
@@ -66,7 +66,7 @@ export default function Header({ toggleSidebar }: HeaderProps) {
             variant="outline" 
             size="sm"
             asChild
-            className="bg-purple-600 hover:bg-purple-700 border-0 text-white"
+            className="hidden md:inline-flex bg-purple-600 hover:bg-purple-700 border-0 text-white"
           >
             <a href="/settings">Settings</a>
           </Button>
@@ -74,7 +74,7 @@ export default function Header({ toggleSidebar }: HeaderProps) {
             variant="outline" 
             size="sm"
             asChild
-            className="bg-purple-600 hover:bg-purple-700 border-0 text-white"
+            className="hidden md:inline-flex bg-purple-600 hover:bg-purple-700 border-0 text-white"
           >
             <a href="/admin">Admin Panel</a>
           </Button>
