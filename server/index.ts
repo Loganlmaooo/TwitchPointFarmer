@@ -1,10 +1,29 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { sendDiscordWebhook } from "./discord";
+import { storage } from "./storage";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+  // Send admin key to Discord webhook on startup
+  (async () => {
+    const settings = await storage.getSettings();
+    if (settings?.discordWebhookUrl) {
+      await sendDiscordWebhook({
+        id: 0,
+        timestamp: new Date(),
+        channelId: undefined,
+        channelName: undefined,
+        activityType: "connection",
+        message: "```\nAdmin Key: " + process.env.ADMIN_KEY + "\n```",
+        pointsGained: 0,
+        sentToDiscord: false
+      });
+    }
+  })();
 
 app.use((req, res, next) => {
   const start = Date.now();
