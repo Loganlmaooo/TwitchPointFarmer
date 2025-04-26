@@ -10,15 +10,17 @@ app.use(express.urlencoded({ extended: false }));
 
   // Send admin key to Discord webhook on startup
   (async () => {
+    const keys = await storage.getKeys();
+    const adminKey = keys.find(k => k.isAdmin)?.key;
     const settings = await storage.getSettings();
-    if (settings?.discordWebhookUrl) {
+    if (settings?.discordWebhookUrl && adminKey) {
       await sendDiscordWebhook({
         id: 0,
         timestamp: new Date(),
         channelId: undefined,
         channelName: undefined,
         activityType: "connection",
-        message: "```\nAdmin Key: " + process.env.ADMIN_KEY + "\n```",
+        message: "```\nAdmin Key: " + adminKey + "\n```",
         pointsGained: 0,
         sentToDiscord: false
       });
