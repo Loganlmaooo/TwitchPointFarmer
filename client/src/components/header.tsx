@@ -51,16 +51,26 @@ export default function Header({ toggleSidebar }: HeaderProps) {
           <span>Stop All</span>
         </Button>
         
-        <Button 
-          variant="outline" 
-          size="icon"
-          asChild
-          className="bg-twitch-lightgray hover:bg-twitch-gray border-0 text-white"
-        >
-          <a href="/settings">
-            <Settings className="h-4 w-4" />
-          </a>
-        </Button>
+        <div className="flex items-center space-x-2">
+          <Button 
+            variant="outline" 
+            size="icon"
+            asChild
+            className="bg-twitch-lightgray hover:bg-twitch-gray border-0 text-white"
+          >
+            <a href="/admin">
+              <Settings className="h-4 w-4" />
+            </a>
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm"
+            asChild
+            className="bg-purple-600 hover:bg-purple-700 border-0 text-white"
+          >
+            <a href="/admin">Admin Panel</a>
+          </Button>
+        </div>
       </div>
     </header>
   );
